@@ -355,22 +355,24 @@
   }
 
   // ─── Legend placement ─────────────────────────────────────────────────────
-  // On desktop: move legend inside #main-table so CSS grid-column/row take effect.
-  // On mobile:  move legend before #main-table in <main> for static strip layout.
+  // Desktop (≥769px): legend lives inside #main-table so grid-column/row apply.
+  // Mobile  (<769px):  legend lives before <main> as a static full-width strip.
 
   function repositionLegend() {
     const legend = document.getElementById("legend-panel");
     const table  = document.getElementById("main-table");
-    const main   = document.querySelector("main");
-    if (!legend || !table || !main) return;
+    if (!legend || !table) return;
 
-    if (window.innerWidth > 768) {
-      if (legend.parentNode !== table) {
+    if (window.innerWidth >= 769) {
+      // Inject as first child of main-table so it sits in the grid
+      if (legend.parentElement !== table) {
         table.insertBefore(legend, table.firstChild);
       }
     } else {
-      if (legend.parentNode !== main) {
-        main.insertBefore(legend, table);
+      // Return to body-level sibling before <main>
+      const main = document.querySelector("main");
+      if (main && legend.parentElement !== main.parentElement) {
+        main.parentElement.insertBefore(legend, main);
       }
     }
   }
@@ -395,11 +397,9 @@
 
   document.addEventListener("DOMContentLoaded", () => {
     buildLayerBar();
-    // Activate default after render.js has built cells
-    setTimeout(() => {
-      activateLayer("default");
-      repositionLegend();
-    }, 50);
+    repositionLegend();
     window.addEventListener("resize", repositionLegend);
+    // Activate default after render.js has built cells
+    setTimeout(() => activateLayer("default"), 50);
   });
 })();

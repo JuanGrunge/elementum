@@ -381,19 +381,29 @@
 
 /* ─── Legend Panel ──────────────────────────────────────────────────────── */
 
+/* Default (outside grid — mobile / pre-JS state) */
 #legend-panel {
-  grid-column: 3 / 17;
-  grid-row: 1;
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
   align-items: center;
-  gap: 0.4rem 1rem;
+  justify-content: center;
+  gap: 0.3rem 0.75rem;
   padding: 0.4rem 0.75rem;
-  background: transparent;
-  border: none;
+  background: rgba(17, 24, 39, 0.85);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  backdrop-filter: blur(4px);
   overflow: hidden;
   font-size: 0.72rem;
+  pointer-events: none;
+  z-index: 5;
+}
+
+/* When JS moves legend inside #main-table on desktop, grid placement kicks in */
+#main-table > #legend-panel {
+  grid-column: 3 / 17;
+  grid-row: 1;
 }
 
 .legend-title {
@@ -405,6 +415,7 @@
   letter-spacing: 0.1em;
   color: var(--accent);
   white-space: nowrap;
+  text-align: center;
 }
 
 .legend-item {
@@ -485,16 +496,21 @@
 
   /* Legend: static strip between layer-bar and table on mobile */
   #legend-panel {
-    position: static;
+    grid-column: unset;
+    grid-row: unset;
     display: flex;
     flex-wrap: wrap;
     width: 100%;
     padding: 0.5rem 1rem;
     background: var(--surface);
+    border: none;
     border-bottom: 1px solid var(--border);
-    grid-column: unset;
-    grid-row: unset;
+    border-radius: 0;
+    backdrop-filter: none;
     overflow: visible;
+    height: auto;
+    font-size: 0.68rem;
+    pointer-events: auto;
   }
 
   /* Detail panel: slides up from bottom */
