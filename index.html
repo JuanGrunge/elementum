@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Elementum — Tabla Periódica Interactiva</title>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&family=IBM+Plex+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="css/base.css" />
+  <link rel="stylesheet" href="css/table.css" />
+  <link rel="stylesheet" href="css/layers.css" />
+</head>
+<body>
+
+  <!-- ── Header ─────────────────────────────────────────────────────────── -->
+  <header>
+    <h1 class="site-title">Elementum</h1>
+    <p class="site-subtitle">Tabla Periódica Interactiva &nbsp;·&nbsp; QUÍMICA GENERAL &nbsp;·&nbsp; UTEM</p>
+  </header>
+
+  <!-- ── Layer Toggle Bar ───────────────────────────────────────────────── -->
+  <nav id="layer-bar" aria-label="Capas de visualización"></nav>
+
+  <!-- ── Main Content ──────────────────────────────────────────────────── -->
+  <main>
+
+    <!-- Main periodic table grid (periods 1–7, groups 1–18) -->
+    <div id="main-table" role="grid" aria-label="Tabla periódica"></div>
+
+    <!-- Lanthanide / Actinide f-block rows -->
+    <div id="fblock-container" aria-label="Lantánidos y Actínidos"></div>
+
+  </main>
+
+  <!-- ── Detail Panel (slide-in from right) ─────────────────────────────── -->
+  <aside id="detail-panel" aria-label="Detalle del elemento" aria-hidden="true">
+    <div class="panel-close-bar">
+      <button id="panel-close" aria-label="Cerrar panel">✕</button>
+    </div>
+    <div id="panel-content"></div>
+  </aside>
+
+  <!-- ── Legend (fixed, bottom-right) — placed after panel for CSS sibling selector -->
+  <aside id="legend-panel" aria-label="Leyenda"></aside>
+
+  <!-- ── Footer ─────────────────────────────────────────────────────────── -->
+  <footer>
+    Herramienta de estudio &nbsp;·&nbsp; <a href="https://github.com/JuanGrunge" target="_blank" rel="noopener">JuanGrunge Develop</a> &nbsp;·&nbsp; UTEM 2026
+  </footer>
+
+  <!-- ── Scripts (order matters: data → render → layers → tooltip) ─────── -->
+  <script src="js/data.js"></script>
+  <script src="js/tooltip.js"></script>
+  <script src="js/render.js"></script>
+  <script src="js/layers.js"></script>
+
+</body>
+</html>
