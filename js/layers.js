@@ -253,9 +253,11 @@
 
   function makeGradientLegend(colorA, colorB, labelLow, labelHigh) {
     return `
-      <div class="legend-gradient-bar" style="background:linear-gradient(to right,${colorA},${colorB})"></div>
-      <div class="legend-gradient-labels">
-        <span>${labelLow}</span><span>${labelHigh}</span>
+      <div class="legend-gradient-wrap">
+        <div class="legend-gradient-bar" style="background:linear-gradient(to right,${colorA},${colorB})"></div>
+        <div class="legend-gradient-labels">
+          <span>${labelLow}</span><span>${labelHigh}</span>
+        </div>
       </div>
       <div class="legend-item"><span class="legend-swatch" style="background:#1f2937"></span><span>Sin datos</span></div>
     `;
@@ -352,6 +354,27 @@
     legend.innerHTML = `<div class="legend-title">${layer.label}</div>` + layer.legend();
   }
 
+  // ─── Legend placement ─────────────────────────────────────────────────────
+  // On desktop: move legend inside #main-table so CSS grid-column/row take effect.
+  // On mobile:  move legend before #main-table in <main> for static strip layout.
+
+  function repositionLegend() {
+    const legend = document.getElementById("legend-panel");
+    const table  = document.getElementById("main-table");
+    const main   = document.querySelector("main");
+    if (!legend || !table || !main) return;
+
+    if (window.innerWidth > 768) {
+      if (legend.parentNode !== table) {
+        table.insertBefore(legend, table.firstChild);
+      }
+    } else {
+      if (legend.parentNode !== main) {
+        main.insertBefore(legend, table);
+      }
+    }
+  }
+
   // ─── Build layer bar ──────────────────────────────────────────────────────
 
   function buildLayerBar() {
@@ -373,6 +396,10 @@
   document.addEventListener("DOMContentLoaded", () => {
     buildLayerBar();
     // Activate default after render.js has built cells
-    setTimeout(() => activateLayer("default"), 50);
+    setTimeout(() => {
+      activateLayer("default");
+      repositionLegend();
+    }, 50);
+    window.addEventListener("resize", repositionLegend);
   });
 })();

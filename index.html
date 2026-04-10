@@ -29,6 +29,10 @@
   <!-- ── Main Content ──────────────────────────────────────────────────── -->
   <main>
 
+    <!-- Legend: static here for mobile (between layer-bar and table).
+         layers.js moves it inside #main-table on desktop so grid-column/row work. -->
+    <aside id="legend-panel" aria-label="Leyenda"></aside>
+
     <!-- Main periodic table grid (periods 1–7, groups 1–18) -->
     <div id="main-table" role="grid" aria-label="Tabla periódica"></div>
 
@@ -44,9 +48,6 @@
     </div>
     <div id="panel-content"></div>
   </aside>
-
-  <!-- ── Legend (fixed, bottom-right) — placed after panel for CSS sibling selector -->
-  <aside id="legend-panel" aria-label="Leyenda"></aside>
 
   <!-- ── Footer ─────────────────────────────────────────────────────────── -->
   <footer>
