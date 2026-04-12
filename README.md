@@ -1,114 +1,86 @@
 # Elementum — Tabla Periódica Interactiva
 
-Herramienta de estudio visual para Química General (QUIC0001, UTEM).  
-Elementum está desplegado y disponible en: juangrunge.github.io/elementum
+**Herramienta de estudio visual para Química General**  
+
+🔗 **[Abrir Elementum](https://juangrunge.github.io/elementum/)**
 
 ---
 
-## Propósito
+## ¿Qué es Elementum?
 
-Funciona como hoja de referencia interactiva que cubre:
+Elementum es una tabla periódica interactiva que permite explorar los 118 elementos químicos a través de distintas capas de visualización. Cada capa colorea la tabla según una propiedad diferente, permitiendo identificar patrones y tendencias periódicas de forma visual e inmediata.
 
-- Configuración electrónica y modelos atómicos
-- Propiedades periódicas (electronegatividad, radio, energía de ionización, afinidad electrónica)
-- Números cuánticos del último electrón
-- Tipos de enlace químico
-- Bloques s / p / d / f y familias de grupos
+Está pensada para estudiantes y docentes de química que necesiten una referencia rápida, visual y confiable — tanto en computador como en dispositivos móviles.
 
 ---
 
-## Estructura de archivos
+## Capas de visualización
 
-```
-elementum/
-├── index.html          Punto de entrada — carga fuentes, estilos y scripts
-├── css/
-│   ├── base.css        Variables CSS, header, layer-bar, footer, scrollbar
-│   ├── table.css       Grid de la tabla, celdas, panel lateral, leyenda
-│   └── layers.css      Clases de color por categoría y animaciones
-└── js/
-    ├── data.js         Array ELEMENTS con los 118 elementos
-    ├── render.js       Construye el grid CSS y las filas f-block
-    ├── layers.js       Lógica de capas de color y barra de botones
-    └── tooltip.js      Panel de detalle con números cuánticos y propiedades
-```
+Cada botón en la barra superior activa una forma distinta de ver la tabla.
 
----
+### Capas estructurales
 
-## Cómo editar datos de un elemento
-
-Abre `js/data.js`. Cada elemento es un objeto JS. Busca por símbolo o Z:
-
-```js
-{ z: 6, symbol: "C", name: "Carbono", mass: 12.011, period: 2, group: 14,
-  block: "p", category: "no-metal", electronegativity: 2.55,
-  atomicRadius: 67, ionizationEnergy: 1086, electronAffinity: 121.8,
-  electronConfig: "1s² 2s² 2p²", valenceElectrons: 4,
-  typicalBond: "covalente" }
-```
-
-Campos editables:
-
-| Campo | Tipo | Notas |
-|---|---|---|
-| `mass` | number | Usa decimales; entero → se muestra entre paréntesis (sintético) |
-| `electronegativity` | number\|null | Escala de Pauling |
-| `atomicRadius` | number\|null | en picómetros |
-| `ionizationEnergy` | number\|null | en kJ/mol |
-| `electronAffinity` | number\|null | en kJ/mol |
-| `electronConfig` | string | Usa caracteres Unicode superíndice (⁰¹²³…) |
-| `typicalBond` | string | Uno de: `"iónico"`, `"covalente"`, `"covalente polar"`, `"metálico"`, `"ninguno"` |
-
----
-
-## Cómo agregar una nueva capa de color
-
-1. **Define la función `apply`** en `js/layers.js`:
-
-```js
-function applyMiCapa(cells) {
-  cells.forEach(cell => {
-    const el = getElement(cell);
-    if (!el) return;
-    cell.style.backgroundColor = miColorParaEl(el);
-  });
-}
-```
-
-2. **Define la función `legend`** que retorna HTML de `<div class="legend-item">…</div>`.
-
-3. **Agrega la entrada** al array `LAYERS` dentro de `layers.js`:
-
-```js
-{
-  id: "mi-capa",
-  label: "Mi Capa",
-  type: "gradient",
-  legend: miLeyenda,
-  apply: applyMiCapa,
-}
-```
-
-La barra de botones se genera automáticamente a partir del array.
-
----
-
-## Capas disponibles
-
-| Capa | Descripción |
+| Capa | Qué muestra |
 |---|---|
-| Categorías | Color por tipo de elemento (metal alcalino, gas noble, etc.) |
-| Clasificación | Metal / Metaloide / No metal |
-| Bloques | Bloque s, p, d, f |
-| Familias | Color por número de grupo (1–18) |
-| Electronegatividad | Gradiente frío→cálido según escala Pauling |
-| Radio Atómico | Gradiente por tamaño en pm |
-| Energía de Ionización | Gradiente verde→rojo en kJ/mol |
-| Tipo de Enlace | Iónico / Covalente / Metálico / Polar |
+| **Categorías** | Clasificación por tipo: metales alcalinos, gases nobles, halógenos, etc. |
+| **Clasificación** | Agrupación en tres grandes familias: metales, metaloides y no metales |
+| **Bloques** | Bloque s, p, d o f según el último orbital que se llena |
+| **Familias** | Grupos del 1 al 18, con igual número de electrones de valencia |
+| **Períodos** | Filas del 1 al 7, con igual número de capas electrónicas |
+
+### Capas de propiedades periódicas
+
+Estas capas usan un gradiente de color: los tonos más claros o intensos indican valores más altos.
+
+| Capa | Qué muestra | Unidad |
+|---|---|---|
+| **Radio Atómico** | Distancia del núcleo al electrón más externo | pm |
+| **Volumen Atómico** | Cociente entre masa molar y densidad | cm³/mol |
+| **Energía de Ionización** | Energía para arrancar un electrón de valencia | kJ/mol |
+| **Electroafinidad** | Energía liberada o absorbida al captar un electrón | kJ/mol |
+| **Electronegatividad** | Capacidad de atraer electrones en un enlace (escala Pauling) | — |
+| **Tipo de Enlace** | Enlace típico del elemento: iónico, covalente, metálico o polar | — |
+
+### Panel de detalle
+
+Al hacer clic sobre cualquier elemento se abre un panel lateral con:
+
+- Número atómico, masa y configuración electrónica
+- Números cuánticos del último electrón (n, l, m, s)
+- Propiedades periódicas con sus valores y unidades
+- Tipo de enlace con explicación de la regla ΔEN
+
+---
+
+## Sobre los datos
+
+Los valores provienen de fuentes de referencia estándar en química:
+
+- **NIST WebBook** — base de datos oficial del Instituto Nacional de Estándares de EE.UU.
+- **CRC Handbook of Chemistry and Physics** — referencia estándar en química aplicada
+- **Fricke & Waber (1971)** — estimaciones teóricas para elementos transuránidos
+
+### Calidad de los datos
+
+Algunos elementos, especialmente actínidos y elementos sintéticos, tienen datos que no han podido ser medidos directamente en laboratorio. Para estos casos, el panel de detalle muestra un badge junto al valor:
+
+| Badge | Significado |
+|---|---|
+| `experimental` | Valor medido directamente en laboratorio |
+| `estimado` | Valor derivado de modelos teóricos o interpolación |
+
+Los elementos Z=104–118 (superpesados sintéticos) no tienen datos de volumen atómico ni electroafinidad — esto es correcto e intencional, ya que no existen mediciones válidas para ellos.
+
+---
+
+## Compatibilidad
+
+Elementum funciona directamente en el navegador, sin instalación. Compatible con Chrome, Firefox, Safari y Edge en versiones modernas. Optimizado para uso en escritorio y móvil.
 
 ---
 
 ## Créditos
 
-**Juan Cruz Muñoz** — UTEM 2026  
-Desarrollado como herramienta de apoyo para QUIC0001 Química General.
+Desarrollado por **Juan Cruz Muñoz**  
+Ingeniería Civil en Ciencia de Datos · UTEM 2026  
+Como herramienta de apoyo para QUIC0001 Química General
