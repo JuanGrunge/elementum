@@ -84,14 +84,35 @@
 
   <!-- ── Footer ─────────────────────────────────────────────────────────── -->
   <footer>
-    Herramienta de estudio &nbsp;·&nbsp; <a href="https://github.com/JuanGrunge" target="_blank" rel="noopener">JuanGrunge Develop</a> &nbsp;·&nbsp; UTEM 2026
+    <div class="footer-inner">
+      <div class="footer-qr">
+        <img src="assets/qr.svg" alt="QR Elementum" class="qr-image" role="button" tabindex="0" title="Ver QR ampliado" />
+        <span class="qr-label">Abrir en móvil</span>
+      </div>
+      <span class="footer-text">
+        Herramienta de estudio &nbsp;·&nbsp;
+        <a href="https://github.com/JuanGrunge" target="_blank" rel="noopener">JuanGrunge Develop</a>
+        &nbsp;·&nbsp; UTEM 2026
+      </span>
+    </div>
   </footer>
+
+  <!-- ── QR Modal ───────────────────────────────────────────────────────── -->
+  <div id="qr-modal" aria-hidden="true" role="dialog" aria-label="QR Elementum">
+    <div id="qr-modal-backdrop"></div>
+    <div id="qr-modal-content">
+      <img src="assets/qr.svg" alt="QR Elementum" id="qr-modal-image" />
+      <p id="qr-modal-label">Escanea para abrir Elementum en tu móvil</p>
+      <button id="qr-modal-close" aria-label="Cerrar">✕</button>
+    </div>
+  </div>
 
   <!-- ── Scripts (order matters: data → render → layers → tooltip) ─────── -->
   <script src="js/data.js"></script>
   <script src="js/tooltip.js"></script>
   <script src="js/render.js"></script>
   <script src="js/layers.js"></script>
+  <script src="js/qr.js"></script>
 
 </body>
 </html>

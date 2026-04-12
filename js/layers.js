@@ -41,25 +41,11 @@
       apply: applyPeriod,
     },
     {
-      id: "electronegatividad",
-      label: "Electronegatividad",
-      type: "gradient",
-      legend: enLegend,
-      apply: applyEN,
-    },
-    {
       id: "radio",
       label: "Radio Atómico",
       type: "gradient",
       legend: radiusLegend,
       apply: applyRadius,
-    },
-    {
-      id: "ionizacion",
-      label: "Energía de Ionización",
-      type: "gradient",
-      legend: ionizationLegend,
-      apply: applyIonization,
     },
     {
       id: "volumen",
@@ -69,11 +55,25 @@
       apply: applyVolume,
     },
     {
+      id: "ionizacion",
+      label: "Energía de Ionización",
+      type: "gradient",
+      legend: ionizationLegend,
+      apply: applyIonization,
+    },
+    {
       id: "electroafinidad",
       label: "Electroafinidad",
       type: "gradient",
       legend: eaLegend,
       apply: applyEA,
+    },
+    {
+      id: "electronegatividad",
+      label: "Electronegatividad",
+      type: "gradient",
+      legend: enLegend,
+      apply: applyEN,
     },
     {
       id: "enlace",
@@ -299,14 +299,9 @@
     cells.forEach(cell => {
       const el = getElement(cell);
       if (!el) return;
-      const color = gradientColor(el.atomicVolume, min, max, "#1a3a1a", "#86efac");
+      const color = gradientColor(el.atomicVolume, min, max, "#1a3a1a", "#4ade80");
+      cell.style.opacity = "";
       cell.style.backgroundColor = color;
-      if (el.atomicVolume !== null) {
-        const t = Math.max(0, Math.min(1, (el.atomicVolume - min) / (max - min)));
-        cell.style.opacity = t > 0.75 ? String(Math.max(0.60, 1 - (t - 0.75) * 1.2)) : "";
-      } else {
-        cell.style.opacity = "";
-      }
     });
   }
 
@@ -442,7 +437,7 @@
 
   function volumeLegend() {
     return DESC + "Volumen atómico: cociente entre masa molar y densidad del elemento (cm³/mol)." + _D +
-      ITEMS + makeGradientLegend("#1a3a1a", "#86efac", "Bajo (4.6 cm³/mol)", "Alto (70.0 cm³/mol)") + _D;
+      ITEMS + makeGradientLegend("#1a3a1a", "#4ade80", "Bajo (4.6 cm³/mol)", "Alto (70.0 cm³/mol)") + _D;
   }
 
   // ─── Utility ──────────────────────────────────────────────────────────────
