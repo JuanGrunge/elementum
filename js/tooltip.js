@@ -90,9 +90,12 @@
 
   // ─── Render detail panel ──────────────────────────────────────────────────
 
-  function fmt(val, unit = "") {
+  function fmt(val, unit = "", quality = null) {
     if (val === null || val === undefined) return '<span class="na">N/D</span>';
-    return `${val}${unit}`;
+    const badge = quality
+      ? `<span class="data-quality-badge data-quality-${quality}">${quality}</span>`
+      : "";
+    return `${val}${unit}${badge}`;
   }
 
   function renderPanel(el) {
@@ -164,8 +167,9 @@
           <tr><th>Propiedad</th><th>Valor</th></tr>
           <tr><td>Electronegatividad (Pauling)</td><td>${fmt(el.electronegativity)}</td></tr>
           <tr><td>Radio atómico</td><td>${fmt(el.atomicRadius, " pm")}</td></tr>
+          <tr><td>Volumen atómico</td><td>${fmt(el.atomicVolume, " cm³/mol", el.dataQuality?.atomicVolume ?? null)}</td></tr>
           <tr><td>Energía de ionización</td><td>${fmt(el.ionizationEnergy, " kJ/mol")}</td></tr>
-          <tr><td>Afinidad electrónica</td><td>${fmt(el.electronAffinity, " kJ/mol")}</td></tr>
+          <tr><td>Afinidad electrónica</td><td>${fmt(el.electronAffinity, " kJ/mol", el.dataQuality?.electronAffinity ?? null)}</td></tr>
         </table>
       </section>
 

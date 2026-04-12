@@ -69,6 +69,13 @@
       apply: applyVolume,
     },
     {
+      id: "electroafinidad",
+      label: "Electroafinidad",
+      type: "gradient",
+      legend: eaLegend,
+      apply: applyEA,
+    },
+    {
       id: "enlace",
       label: "Tipo de Enlace",
       type: "bond",
@@ -292,7 +299,44 @@
     cells.forEach(cell => {
       const el = getElement(cell);
       if (!el) return;
-      cell.style.backgroundColor = gradientColor(el.atomicVolume, min, max, "#1a3a1a", "#86efac");
+      const color = gradientColor(el.atomicVolume, min, max, "#1a3a1a", "#86efac");
+      cell.style.backgroundColor = color;
+      if (el.atomicVolume !== null) {
+        const t = Math.max(0, Math.min(1, (el.atomicVolume - min) / (max - min)));
+        cell.style.opacity = t > 0.75 ? String(Math.max(0.60, 1 - (t - 0.75) * 1.2)) : "";
+      } else {
+        cell.style.opacity = "";
+      }
+    });
+  }
+
+  function applyEA(cells) {
+    const values = ELEMENTS.map(e => e.electronAffinity).filter(v => v !== null);
+    const min = Math.min(...values);
+    const max = Math.max(...values);
+
+    cells.forEach(cell => {
+      const el = getElement(cell);
+      if (!el) return;
+      cell.style.opacity = "";
+
+      if (el.electronAffinity === null || el.electronAffinity === undefined) {
+        cell.style.backgroundColor = "#1f2937";
+        return;
+      }
+
+      const val = el.electronAffinity;
+      let color;
+
+      if (val < 0) {
+        color = gradientColor(val, min, 0, "#dc2626", "#6b3040");
+      } else if (val > 0) {
+        color = gradientColor(val, 0, max, "#1a4a5c", "#0891b2");
+      } else {
+        color = "#3d3d3d";
+      }
+
+      cell.style.backgroundColor = color;
     });
   }
 
@@ -368,6 +412,24 @@
       ITEMS + makeGradientLegend("#14532d", "#fca5a5", "Baja (376 kJ/mol)", "Alta (2372 kJ/mol)") + _D;
   }
 
+  function eaLegend() {
+    return DESC + "Electroafinidad: energía liberada o absorbida al añadir un electrón al átomo en estado gaseoso (kJ/mol)." + _D +
+      `<div class="legend-items">
+        <div class="legend-gradient-wrap">
+          <div class="legend-gradient-bar"
+            style="background:linear-gradient(to right,#dc2626,#6b3040,#3d3d3d,#1a4a5c,#0891b2)">
+          </div>
+          <div class="legend-gradient-labels">
+            <span>Negativa (−223)</span><span>0</span><span>Positiva (+349)</span>
+          </div>
+          <div class="legend-item" style="margin-top:0.2rem">
+            <span class="legend-swatch" style="background:#1f2937;border:1px solid rgba(255,255,255,0.15)"></span>
+            <span>Sin datos</span>
+          </div>
+        </div>
+      </div>`;
+  }
+
   function bondLegend() {
     return DESC + "Tipo de enlace típico según diferencia de electronegatividad entre átomos enlazados." + _D +
       ITEMS + makeLegendItems(Object.entries(BOND_COLORS).map(([k, v]) => [v, BOND_LABELS[k]])) + _D;
@@ -397,6 +459,7 @@
   function resetCellColors(cells) {
     cells.forEach(cell => {
       cell.style.backgroundColor = "";
+      cell.style.opacity = "";
     });
   }
 
