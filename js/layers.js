@@ -311,9 +311,11 @@
         <div class="legend-gradient-labels">
           <span>${labelLow}</span><span>${labelHigh}</span>
         </div>
-      </div>
-      <div class="legend-item"><span class="legend-swatch" style="background:#1f2937"></span><span>Sin datos</span></div>
-    `;
+        <div class="legend-item" style="margin-top:0.2rem">
+          <span class="legend-swatch" style="background:#1f2937;border:1px solid rgba(255,255,255,0.15)"></span>
+          <span>Sin datos</span>
+        </div>
+      </div>`;
   }
 
   const DESC  = '<div class="legend-desc">';

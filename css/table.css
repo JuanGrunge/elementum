@@ -68,7 +68,7 @@
 }
 
 .cell-symbol {
-  font-family: var(--font-mono);
+  font-family: var(--font-display);
   font-size: clamp(1.12rem, 1.75vw, 1.82rem);
   font-weight: 700;
   color: #fff;
@@ -234,7 +234,7 @@
 }
 
 .panel-symbol {
-  font-family: var(--font-mono);
+  font-family: var(--font-display);
   font-size: 3.5rem;
   font-weight: 700;
   color: var(--accent);
@@ -487,13 +487,13 @@
 .legend-gradient-wrap {
   display: flex;
   flex-direction: column;
-  flex: 1;
-  min-width: 100px;
-  max-width: 180px;
+  flex: 2;
+  min-width: 160px;
+  max-width: none;
 }
 
 .legend-gradient-bar {
-  height: 8px;
+  height: 12px;
   border-radius: 3px;
   width: 100%;
 }
@@ -501,8 +501,9 @@
 .legend-gradient-labels {
   display: flex;
   justify-content: space-between;
-  font-size: 0.6rem;
+  font-size: 0.58rem;
   color: var(--text-muted);
+  white-space: nowrap;
 }
 
 /* ─── Mobile layout (≤768px) ────────────────────────────────────────────── */
@@ -582,6 +583,12 @@
     max-height: none;
     overflow-y: visible;
     grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+  }
+
+  .legend-gradient-wrap {
+    min-width: 120px;
+    max-width: none;
+    flex: 1;
   }
 
   /* Detail panel: slides up from bottom */
