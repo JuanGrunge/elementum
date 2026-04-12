@@ -34,6 +34,13 @@
       apply: applyFamily,
     },
     {
+      id: "periodos",
+      label: "Períodos",
+      type: "period",
+      legend: periodLegend,
+      apply: applyPeriod,
+    },
+    {
       id: "electronegatividad",
       label: "Electronegatividad",
       type: "gradient",
@@ -53,6 +60,13 @@
       type: "gradient",
       legend: ionizationLegend,
       apply: applyIonization,
+    },
+    {
+      id: "volumen",
+      label: "Volumen Atómico",
+      type: "gradient",
+      legend: volumeLegend,
+      apply: applyVolume,
     },
     {
       id: "enlace",
@@ -133,6 +147,26 @@
     "covalente polar":"Covalente polar",
     "metálico":      "Metálico",
     "ninguno":       "Sin enlace",
+  };
+
+  const PERIOD_COLORS = {
+    1: "#f43f5e",
+    2: "#f97316",
+    3: "#eab308",
+    4: "#22c55e",
+    5: "#06b6d4",
+    6: "#8b5cf6",
+    7: "#ec4899",
+  };
+
+  const PERIOD_LABELS = {
+    1: "Período 1",
+    2: "Período 2",
+    3: "Período 3",
+    4: "Período 4",
+    5: "Período 5",
+    6: "Período 6",
+    7: "Período 7",
   };
 
   // ─── Gradient helpers ─────────────────────────────────────────────────────
@@ -243,6 +277,25 @@
     });
   }
 
+  function applyPeriod(cells) {
+    cells.forEach(cell => {
+      const el = getElement(cell);
+      if (!el) return;
+      cell.style.backgroundColor = PERIOD_COLORS[el.period] || "#1f2937";
+    });
+  }
+
+  function applyVolume(cells) {
+    const values = ELEMENTS.map(e => e.atomicVolume).filter(v => v !== null);
+    const min = Math.min(...values);
+    const max = Math.max(...values);
+    cells.forEach(cell => {
+      const el = getElement(cell);
+      if (!el) return;
+      cell.style.backgroundColor = gradientColor(el.atomicVolume, min, max, "#1a3a1a", "#86efac");
+    });
+  }
+
   // ─── Legend builders ──────────────────────────────────────────────────────
 
   function makeLegendItems(items) {
@@ -263,47 +316,69 @@
     `;
   }
 
+  const DESC  = '<div class="legend-desc">';
+  const ITEMS = '<div class="legend-items">';
+  const _D    = '</div>';
+
   function categoryLegend() {
-    return makeLegendItems(Object.entries(CATEGORY_COLORS).map(([k, v]) => [v, CATEGORY_LABELS[k]]));
+    return DESC + "Clasificación de los elementos según sus propiedades físicas y químicas generales." + _D +
+      ITEMS + makeLegendItems(Object.entries(CATEGORY_COLORS).map(([k, v]) => [v, CATEGORY_LABELS[k]])) + _D;
   }
 
   function classificationLegend() {
-    return makeLegendItems([
-      ["#3b82f6", "Metal"],
-      ["#10b981", "Metaloide"],
-      ["#f97316", "No metal / Gas noble"],
-    ]);
+    return DESC + "Agrupación en tres grandes familias: metales, no metales y metaloides." + _D +
+      ITEMS + makeLegendItems([
+        ["#3b82f6", "Metal"],
+        ["#10b981", "Metaloide"],
+        ["#f97316", "No metal / Gas noble"],
+      ]) + _D;
   }
 
   function blockLegend() {
-    return makeLegendItems([
-      [BLOCK_COLORS.s, "Bloque s"],
-      [BLOCK_COLORS.p, "Bloque p"],
-      [BLOCK_COLORS.d, "Bloque d"],
-      [BLOCK_COLORS.f, "Bloque f"],
-    ]);
+    return DESC + "Bloques según el último orbital que se llena: s, p, d o f." + _D +
+      ITEMS + makeLegendItems([
+        [BLOCK_COLORS.s, "Bloque s"],
+        [BLOCK_COLORS.p, "Bloque p"],
+        [BLOCK_COLORS.d, "Bloque d"],
+        [BLOCK_COLORS.f, "Bloque f"],
+      ]) + _D;
   }
 
   function familyLegend() {
-    return makeLegendItems(
-      Object.entries(FAMILY_COLORS).map(([g, c]) => [c, `Grupo ${g}`])
-    );
+    return DESC + "Familias o grupos: columnas con igual número de electrones de valencia." + _D +
+      ITEMS + makeLegendItems(
+        Object.entries(FAMILY_COLORS).map(([g, c]) => [c, `Grupo ${g}`])
+      ) + _D;
   }
 
   function enLegend() {
-    return makeGradientLegend("#1e3a5f", "#00d4ff", "Baja EN (0.7)", "Alta EN (3.98)");
+    return DESC + "Electronegatividad (Pauling): capacidad de un átomo de atraer electrones en un enlace." + _D +
+      ITEMS + makeGradientLegend("#1e3a5f", "#00d4ff", "Baja EN (0.7)", "Alta EN (3.98)") + _D;
   }
 
   function radiusLegend() {
-    return makeGradientLegend("#0c4a6e", "#7dd3fc", "Pequeño (31 pm)", "Grande (298 pm)");
+    return DESC + "Radio atómico: distancia del núcleo al electrón más externo, en picómetros (pm)." + _D +
+      ITEMS + makeGradientLegend("#0c4a6e", "#7dd3fc", "Pequeño (31 pm)", "Grande (298 pm)") + _D;
   }
 
   function ionizationLegend() {
-    return makeGradientLegend("#14532d", "#fca5a5", "Baja (376 kJ/mol)", "Alta (2372 kJ/mol)");
+    return DESC + "Energía de ionización: energía para arrancar un electrón de valencia, en kJ/mol." + _D +
+      ITEMS + makeGradientLegend("#14532d", "#fca5a5", "Baja (376 kJ/mol)", "Alta (2372 kJ/mol)") + _D;
   }
 
   function bondLegend() {
-    return makeLegendItems(Object.entries(BOND_COLORS).map(([k, v]) => [v, BOND_LABELS[k]]));
+    return DESC + "Tipo de enlace típico según diferencia de electronegatividad entre átomos enlazados." + _D +
+      ITEMS + makeLegendItems(Object.entries(BOND_COLORS).map(([k, v]) => [v, BOND_LABELS[k]])) + _D;
+  }
+
+  function periodLegend() {
+    return DESC + "Períodos: filas con igual número de capas electrónicas (mismo n principal)." + _D +
+      ITEMS + makeLegendItems(Object.entries(PERIOD_COLORS).map(([k, v]) => [v, PERIOD_LABELS[k]])) + _D;
+  }
+
+  function volumeLegend() {
+    return DESC + "Volumen atómico: cociente entre masa molar y densidad del elemento (cm³/mol)." + _D +
+      ITEMS + makeGradientLegend("#1a3a1a", "#86efac", "Bajo (4.6 cm³/mol)", "Alto (70.0 cm³/mol)") + _D;
   }
 
   // ─── Utility ──────────────────────────────────────────────────────────────
@@ -351,7 +426,13 @@
   function updateLegend(layer) {
     const legend = document.getElementById("legend-panel");
     if (!legend) return;
-    legend.innerHTML = `<div class="legend-title">${layer.label}</div>` + layer.legend();
+    legend.innerHTML =
+      `<div class="legend-left">
+         <div class="legend-title">${layer.label}</div>
+         ${layer.legend().split('<div class="legend-items">')[0]}
+       </div>` +
+      `<div class="legend-items">` +
+      layer.legend().split('<div class="legend-items">')[1];
   }
 
   // ─── Legend placement ─────────────────────────────────────────────────────

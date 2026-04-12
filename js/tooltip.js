@@ -63,7 +63,7 @@
 
   const BOND_EXPLANATIONS = {
     "iónico": "Se produce cuando la diferencia de electronegatividad es ≥ 1.7. Un átomo cede electrones al otro, formando iones de carga opuesta que se atraen electrostáticamente.",
-    "covalente": "Ocurre entre no metales con electronegatividades similares. Ambos átomos comparten electrones de forma aproximadamente equitativa.",
+    "covalente": "Ocurre entre no metales con electronegatividades similares. Ambos átomos comparten electrones de forma aproximadamente equitativa. Un caso especial es el enlace covalente dativo o coordinado, donde un solo átomo aporta ambos electrones del par compartido (ej: NH₃ + H⁺ → NH₄⁺).",
     "covalente polar": "Se da cuando dos no metales comparten electrones pero con diferencia de electronegatividad entre 0.5 y 1.7, creando un dipolo parcial (δ⁺/δ⁻).",
     "metálico": "Los metales ceden sus electrones de valencia a una «nube» o «mar» de electrones deslocalizados, que genera conductividad eléctrica y maleabilidad.",
     "ninguno": "Los gases nobles tienen configuración electrónica completa (octeto o dueto para He) y no forman enlaces en condiciones normales.",
@@ -173,6 +173,12 @@
       <section class="panel-section">
         <h3>Enlace Químico</h3>
         <div class="bond-tag bond-${el.typicalBond.replace(/\s+/g, '-')}">${el.typicalBond.charAt(0).toUpperCase() + el.typicalBond.slice(1)}</div>
+        ${el.electronegativity !== null ? `
+        <div class="delta-en-box">
+          <strong>ΔEN del elemento: ${el.electronegativity}</strong> (escala Pauling)<br>
+          Regla: ΔEN entre átomos enlazados determina el tipo de enlace<br>
+          0 = apolar · 0–1.7 = polar · ≥1.7 = iónico
+        </div>` : ""}
         <p class="bond-explanation">${BOND_EXPLANATIONS[el.typicalBond] || ""}</p>
       </section>
     `;
