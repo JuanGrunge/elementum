@@ -1,7 +1,7 @@
 # Elementum — Tabla Periódica Interactiva
 
 Herramienta de estudio visual para Química General (QUIC0001, UTEM).  
-Abre `index.html` directamente en Chrome — sin servidor, sin instalación.
+Elementum está desplegado y disponible en: juangrunge.github.io/elementum
 
 ---
 
