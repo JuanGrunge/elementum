@@ -225,11 +225,13 @@ footer a:hover {
   border-radius: var(--radius);
   padding: 1.5rem;
   box-shadow: 0 0 40px rgba(0, 212, 255, 0.2);
+  max-width: 90vw;
+  max-height: 90vh;
 }
 
 #qr-modal-image {
-  width: 500px;
-  height: 500px;
+  width: min(500px, 80vw);
+  height: min(500px, 80vw);
   filter: drop-shadow(0 0 8px rgba(0, 212, 255, 0.35));
 }
 
